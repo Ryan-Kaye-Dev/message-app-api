@@ -7,6 +7,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 var indexRouter = require("./routes/index");
+const signupRouter = require("./routes/signup");
 
 var app = express();
 
@@ -18,6 +19,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/", indexRouter);
+app.use("/signup", signupRouter);
 
 async function main() {
   await mongoose.connect(process.env.MONGO_DB_URI).then(() => {
