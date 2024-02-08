@@ -6,8 +6,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-var indexRouter = require("./routes/index");
-const signupRouter = require("./routes/signup");
+async function main() {
+  await mongoose.connect(process.env.MONGO_DB_URI).then(() => {
+    console.log("Connected to the database successfully!");
+  });
+}
+
+main().catch((err) => console.error(err));
 
 var app = express();
 
@@ -18,15 +23,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
+var indexRouter = require("./routes/index");
+const apiRouter = require("./routes/api");
+
+app.use("/api", apiRouter);
 app.use("/", indexRouter);
-app.use("/signup", signupRouter);
-
-async function main() {
-  await mongoose.connect(process.env.MONGO_DB_URI).then(() => {
-    console.log("Connected to the database successfully!");
-  });
-}
-
-main().catch((err) => console.error(err));
 
 module.exports = app;
