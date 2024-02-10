@@ -23,8 +23,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
-var indexRouter = require("./routes/index");
-const apiRouter = require("./routes/api");
+var indexRouter = require("./routes/index.js");
+const apiRouter = require("./routes/api.js");
 
 app.use("/api", apiRouter);
 app.use("/", indexRouter);
