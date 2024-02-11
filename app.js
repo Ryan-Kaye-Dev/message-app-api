@@ -7,6 +7,12 @@ const cors = require("cors");
 require("dotenv").config();
 const multer = require("multer");
 
+// PASSPORT
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const JWTStrategy = require("passport-jwt").Strategy;
+const ExtractJWT = require("passport-jwt").ExtractJwt;
+
 async function main() {
   await mongoose.connect(process.env.MONGO_DB_URI).then(() => {
     console.log("Connected to the database successfully!");
@@ -39,6 +45,31 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
+
+// Passport middleware
+passport.use(
+  "login",
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      // Find the user associated with the username provided by the user
+      const user = await User.findOne({ username });
+      if (!user) {
+        // If the user isn't found in the database, return a message
+        return done(null, false, { message: "User not found" });
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return done(null, false, { message: "Invalid credentials" });
+      }
+      return done(null, user, { message: "Logged in successfully" });
+    } catch (error) {
+      return done(error);
+    }
+  })
+);
+
+app.use(passport.initialize());
 
 // Multer middleware for file upload
 app.use(upload.single("avatar"));

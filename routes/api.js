@@ -12,9 +12,7 @@ router.get("/", function (req, res, next) {
 // create user - api/signup
 router.post("/signup", user_controller.signup);
 
-// create user api/signup get
-router.get("/signup", function (req, res, next) {
-  res.send("Hi");
-});
+// login user - api/login
+router.post("/login", user_controller.login);
 
 module.exports = router;
