@@ -1,6 +1,7 @@
 const User = require("../models/user.js");
 const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
+const path = require("path");
 
 exports.signup = [
   // Validate request body fields
