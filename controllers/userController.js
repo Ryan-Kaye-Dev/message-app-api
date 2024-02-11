@@ -34,6 +34,15 @@ exports.signup = [
         email: req.body.email,
       });
 
+      // Handle avatar upload
+      if (req.file) {
+        // Assuming you're using multer middleware to handle file uploads
+        user.avatar = req.file.path; // Store the path to the uploaded avatar image
+      } else {
+        // If no file is uploaded, use the default avatar
+        user.avatar = path.join("images", "default.png");
+      }
+
       // Save user to the database
       await user.save();
 
