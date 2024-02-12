@@ -87,7 +87,7 @@ exports.getuser = async (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
     // Extract the user ID from the decoded token
-    const userId = decodedToken.userId;
+    const userId = decodedToken.id;
 
     // Find the user by ID
     const user = await User.findById(userId);
