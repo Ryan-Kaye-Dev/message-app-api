@@ -78,19 +78,34 @@ exports.logout = (req, res) => {
   res.json({ message: "Logout successful" });
 };
 
-exports.getuser = async (req, res, next) => {
+xports.getuser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id);
+    // Get the JWT token from the request headers or cookies
+    const token = req.headers.authorization.split(" ")[1]; // Assuming token is sent in the Authorization header
+
+    // Decode the JWT token to access the payload
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Extract the user ID from the decoded token
+    const userId = decodedToken.userId;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    // If user not found, return 404
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Send the user details including the user ID in the response
     res.json({
+      userId: user._id, // Include user ID in the response
       username: user.username,
       avatar: user.avatar,
       friends: user.friends,
     });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
   } catch (error) {
+    // Handle JWT verification errors or other errors
     next(error);
   }
 };
