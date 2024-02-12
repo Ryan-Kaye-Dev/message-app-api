@@ -78,7 +78,7 @@ exports.logout = (req, res) => {
   res.json({ message: "Logout successful" });
 };
 
-xports.getuser = async (req, res, next) => {
+exports.getuser = async (req, res, next) => {
   try {
     // Get the JWT token from the request headers or cookies
     const token = req.headers.authorization.split(" ")[1]; // Assuming token is sent in the Authorization header
