@@ -77,3 +77,20 @@ exports.logout = (req, res) => {
   // handle on the client side
   res.json({ message: "Logout successful" });
 };
+
+exports.getuser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    res.json({
+      username: user.username,
+      avatar: user.avatar,
+      friends: user.friends,
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};

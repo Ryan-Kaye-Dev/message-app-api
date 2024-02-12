@@ -15,4 +15,7 @@ router.post("/signup", user_controller.signup);
 // login user - api/login
 router.post("/login", user_controller.login);
 
+// get user detaols - api/user
+router.get("/user/:id", user_controller.getuser);
+
 module.exports = router;
