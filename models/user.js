@@ -6,7 +6,7 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   email: { type: String, required: true },
   friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  avatar: { type: String, default: "default.png" },
+  avatar: { type: String, default: "/images/default.png" },
 });
 
 module.exports = mongoose.model("User", userSchema);
