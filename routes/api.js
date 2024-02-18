@@ -20,12 +20,12 @@ router.post("/login", user_controller.login);
 router.get("/user", user_controller.getuser);
 
 // create chatroom - api/chatroom/create
-router.post("chatrooms/create", chatroom_controller.create_chatroom);
+router.post("/chatrooms/create", chatroom_controller.create_chatroom);
 
 // get chatroom - api/chatroom/:id
-router.post("chatrooms/:id", chatroom_controller.get_chatroom);
+router.post("/chatrooms/:id", chatroom_controller.get_chatroom);
 
 // get all chatrooms - api/chatrooms
-router.get("chatrooms", chatroom_controller.get_all_chatrooms);
+router.get("/chatrooms", chatroom_controller.get_all_chatrooms);
 
 module.exports = router;
