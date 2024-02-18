@@ -1,7 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const path = require("path");
 const jwt = require("jsonwebtoken");
-const Chatroom = require("../models/Chatroom.js");
+const chatroom = require("../models/chatroom.js");
 
 exports.create_chatroom = [
   // Validate request body fields
