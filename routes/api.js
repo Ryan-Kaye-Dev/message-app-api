@@ -4,6 +4,7 @@ var router = express.Router();
 // Require controller modules.
 const user_controller = require("../controllers/userController.js");
 const chatroom_controller = require("../controllers/chatroomController.js");
+const message_controller = require("../controllers/messageController.js");
 
 // index route
 router.get("/", function (req, res, next) {
@@ -27,5 +28,8 @@ router.post("/chatrooms/:id", chatroom_controller.get_chatroom);
 
 // get all chatrooms - api/chatrooms
 router.get("/chatrooms", chatroom_controller.get_all_chatrooms);
+
+// create new message in chatroom - api/chatrooms/:id/messages
+router.post("/chatrooms/:id/messages", message_controller.new_message);
 
 module.exports = router;
