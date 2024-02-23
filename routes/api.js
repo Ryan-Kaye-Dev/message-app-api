@@ -17,8 +17,11 @@ router.post("/signup", user_controller.signup);
 // login user - api/login
 router.post("/login", user_controller.login);
 
-// get user details - api/user
+// get current user details - api/user
 router.get("/user", user_controller.getuser);
+
+// get another user's details - api/user/:id
+router.get("/user/:id", user_controller.get_user);
 
 // create chatroom - api/chatroom/create
 router.post("/chatrooms/create", chatroom_controller.create_chatroom);
