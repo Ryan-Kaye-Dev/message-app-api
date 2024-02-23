@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const messageSchema = new Schema({
-  sender: { type: Schema.Types.ObjectId, ref: "User" },
-  message: { type: String, required: true },
-  chatroom: { type: Schema.Types.ObjectId, ref: "Chatroom" },
-  date: { type: Date, default: Date.now },
-});
+const messageSchema = new Schema(
+  {
+    sender: { type: Schema.Types.ObjectId, ref: "User" },
+    message: { type: String, required: true },
+    chatroom: { type: Schema.Types.ObjectId, ref: "Chatroom" },
+    date: { type: Date, default: Date.now },
+  },
+  { toJSON: { virtuals: true } }
+);
 
 // Define a virtual for formatted date and time
 messageSchema.virtual("formattedDateTime").get(function () {
