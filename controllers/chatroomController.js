@@ -60,3 +60,26 @@ exports.get_all_chatrooms = async function (req, res, next) {
     next(error);
   }
 };
+
+exports.get_chatroom_messages = async function (req, res, next) {
+  try {
+    // Find the chatroom by its ID and populate the messages field
+    const chatroom = await Chatroom.findById(req.params.id).populate(
+      "messages"
+    );
+
+    // If the chatroom is not found, return a 404 response
+    if (!chatroom) {
+      return res.status(404).json({ message: "Chatroom not found" });
+    }
+
+    // Extract the messages from the chatroom
+    const messages = chatroom.messages;
+
+    // Return the messages in the response
+    res.json(messages);
+  } catch (err) {
+    // If an error occurs, pass it to the error handler middleware
+    next(err);
+  }
+};
