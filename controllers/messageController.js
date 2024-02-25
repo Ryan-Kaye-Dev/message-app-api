@@ -36,7 +36,7 @@ exports.new_message = [
       await message.save();
 
       // update the chatroom's message array
-      await Chatroom.findByIdAndUpdate(req.body.chatroom, {
+      await Chatroom.findByIdAndUpdate(req.body.chatroomid, {
         $push: { messages: message._id },
       });
 
