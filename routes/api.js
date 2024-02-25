@@ -35,10 +35,16 @@ router.get("/chatrooms", chatroom_controller.get_all_chatrooms);
 // create new message in chatroom - api/chatrooms/:id/messages
 router.post("/chatrooms/:id/messages", message_controller.new_message);
 
-// get messages in chatroom - api/chatrooms/:id/messages
+// get a single message - api/chatrooms/:id/messages/:id
 router.get(
-  "/chatrooms/:id/messages",
-  chatroom_controller.get_chatroom_messages
+  "/chatrooms/:id/messages/:id",
+  message_controller.get_single_message
+);
+
+// get a single message - api/chatrooms/:id/messages/:messageId
+router.get(
+  "/chatrooms/:id/messages/:messageId",
+  message_controller.get_single_message
 );
 
 module.exports = router;

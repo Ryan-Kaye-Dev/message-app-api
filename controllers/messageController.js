@@ -47,3 +47,17 @@ exports.new_message = [
     }
   },
 ];
+
+exports.get_single_message = async (req, res, next) => {
+  try {
+    const message = await Message.findById(req.params.messageId);
+
+    if (!message) {
+      return res.status(404).json({ message: "Message not found" });
+    }
+
+    res.status(200).json({ message });
+  } catch (err) {
+    next(err);
+  }
+};
