@@ -27,7 +27,7 @@ router.get("/user/:id", user_controller.get_user);
 router.post("/chatrooms/create", chatroom_controller.create_chatroom);
 
 // get chatroom - api/chatroom/:id
-router.post("/chatrooms/:id", chatroom_controller.get_chatroom);
+router.get("/chatrooms/:id", chatroom_controller.get_chatroom);
 
 // get all chatrooms - api/chatrooms
 router.get("/chatrooms", chatroom_controller.get_all_chatrooms);
