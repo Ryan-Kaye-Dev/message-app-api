@@ -9,8 +9,15 @@ exports.new_message = [
   body("message", "Message required").trim().isLength({ min: 1 }).escape(),
   async (req, res, next) => {
     try {
-      // Get the JWT token from the request headers or cookies
-      const token = req.headers.authorization.split(" ")[1]; // Assuming token is sent in the Authorization header
+      // Check if Authorization header is present
+      if (!req.headers.authorization) {
+        return res
+          .status(401)
+          .json({ message: "Authorization header missing" });
+      }
+
+      // Get the JWT token from the request headers
+      const token = req.headers.authorization.split(" ")[1];
 
       // Decode the JWT token to access the payload
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -26,6 +33,7 @@ exports.new_message = [
         return res.status(404).json({ message: "User not found" });
       }
 
+      // Create a new message using the user's information
       const message = new Message({
         sender: user,
         message: req.body.message,
@@ -35,7 +43,7 @@ exports.new_message = [
       // Save message to the database
       await message.save();
 
-      // update the chatroom's message array
+      // Update the chatroom's message array
       await Chatroom.findByIdAndUpdate(req.body.chatroomid, {
         $push: { messages: message._id },
       });
