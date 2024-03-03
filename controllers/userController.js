@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 const path = require("path");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
 
 exports.signup = [
   // Validate request body fields
@@ -127,3 +128,52 @@ exports.get_user = async (req, res, next) => {
     res.status(500).json({ error: "Internal server error" }); // Handle internal server error
   }
 };
+
+// Multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Set the destination folder based on the user ID
+    const userId = req.params.userId;
+    const userFolder = path.join(__dirname, "../public/uploads", userId);
+    cb(null, userFolder);
+  },
+  filename: (req, file, cb) => {
+    // Set the filename to the current timestamp with the original extension
+    const timestamp = Date.now();
+    const extension = path.extname(file.originalname);
+    cb(null, `${timestamp}${extension}`);
+  },
+});
+
+// Multer instance with storage configuration
+const upload = multer({ storage });
+
+// Function to handle file upload
+(exports.uploadUserAvatar = upload.single("avatar")),
+  async (req, res, next) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      const user = await User.findById(req.params.userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Save the file path to the user document in the database
+      const filePath = path.join(
+        "/uploads",
+        req.params.userId,
+        req.file.filename
+      );
+      user.avatar = filePath;
+
+      await user.save();
+
+      res.status(200).json({ message: "Avatar uploaded successfully" });
+    } catch (error) {
+      console.error("Error uploading avatar:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };

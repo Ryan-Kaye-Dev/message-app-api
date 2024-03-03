@@ -41,4 +41,7 @@ router.get(
   message_controller.get_single_message
 );
 
+// upload avatar to user profile
+router.post("/user/:id/upload", user_controller.uploadUserAvatar);
+
 module.exports = router;
