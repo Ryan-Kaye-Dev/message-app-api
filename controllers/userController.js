@@ -149,31 +149,32 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Function to handle file upload
-(exports.uploadUserAvatar = upload.single("avatar")),
-  async (req, res, next) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded" });
-      }
+exports.uploadUserAvatar = upload.single("avatar");
 
-      const user = await User.findById(req.params.userId);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      // Save the file path to the user document in the database
-      const filePath = path.join(
-        "/uploads",
-        req.params.userId,
-        req.file.filename
-      );
-      user.avatar = filePath;
-
-      await user.save();
-
-      res.status(200).json({ message: "Avatar uploaded successfully" });
-    } catch (error) {
-      console.error("Error uploading avatar:", error);
-      res.status(500).json({ message: "Internal server error" });
+exports.handleAvatarUpload = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
     }
-  };
+
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Save the file path to the user document in the database
+    const filePath = path.join(
+      "/uploads",
+      req.params.userId,
+      req.file.filename
+    );
+    user.avatar = filePath;
+
+    await user.save();
+
+    res.status(200).json({ message: "Avatar uploaded successfully" });
+  } catch (error) {
+    console.error("Error uploading avatar:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

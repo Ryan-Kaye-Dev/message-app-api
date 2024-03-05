@@ -6,12 +6,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const multer = require("multer");
+const fs = require("fs");
 
 // PASSPORT
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const JWTStrategy = require("passport-jwt").Strategy;
-const ExtractJWT = require("passport-jwt").ExtractJwt;
+const bcrypt = require("bcryptjs"); // Import bcrypt
+const User = require("./models/user"); // Import User model
 
 async function main() {
   await mongoose.connect(process.env.MONGO_DB_URI).then(() => {
